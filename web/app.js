@@ -108,9 +108,9 @@ const templates = [
 ];
 
 const trustedResources = [
-  resource("life-design", "まず整理する", "治療と暮らしをデザインする", "大切にしたい生活、避けたいこと、相談のゴールを分ける", "🧭", "治療を受ける時も、病気だけでなく暮らし全体を一緒に考えることが大切です。何を大切にしたいか、何を避けたいか、誰に何を相談したいかを分けると、医療者や相談支援センターに伝えやすくなります。", ["治療の話だけで生活が置き去りになっている", "自分が何を大切にしたいのか言葉にできない", "こうはなりたくないという不安がある"], ["治療を受けながら、保ちたい生活について相談できますか？", "避けたいことや譲れないことを、どのように医療者へ伝えればよいですか？", "相談支援センターで、暮らしや仕事、家族のことも一緒に整理できますか？"], ["大切にしたいことを1つ書く", "避けたいことを1つ書く", "相談のゴールを1つ選ぶ"], "https://ganjoho.jp/public/support/index.html", "がん情報サービス 療養生活の支援"),
-  resource("first", "まず整理する", "まず何を調べるか整理する", "病名や治療の一般情報を見る前に、知りたいことを分ける", "📘", "がんの情報は量が多く、いきなり外部サイトを読むだけでは不安が増えることがあります。まず、病気の説明、検査、治療、副作用、生活、お金、家族への伝え方のどれを知りたいのかを分けます。", ["説明を聞いたが、どこから確認すればよいか分からない", "検索結果が多すぎて、信頼できる情報を選べない"], ["私がまず理解しておくべき病気や治療の言葉は何ですか？", "自分の場合に当てはまる情報と、一般情報の違いはどこですか？"], ["知りたいことを1つだけ相談メモに書く", "一般情報を読んだ後、自己判断せず主治医に確認する"], "https://ganjoho.jp/public/index.html", "国立がん研究センター がん情報サービス"),
-  resource("center", "まず整理する", "がん相談支援センターに相談する", "治療以外の不安も相談できる窓口として使う", "👥", "がん相談支援センターは、患者さん本人だけでなく家族も相談できる窓口です。治療方針を決めてもらう場所ではなく、困りごとを整理し、必要な情報や相談先につなげてもらうために使います。", ["医師に聞くほどではないと思って我慢している", "お金、仕事、家族、制度の話を誰に聞けばよいか分からない"], ["この内容は相談支援センターで相談できますか？", "主治医に確認した方がよいことは何ですか？"], ["相談メモをテキストで出す", "相談時に、今一番困っていることを1つ目に伝える"], "https://hospdb.ganjoho.jp/kyotendb.nsf/xpConsultantSearchTop.xsp", "がん相談支援センター検索"),
+  resource("life-design", "相談の入口", "治療と暮らしをデザインする", "大切にしたい生活、避けたいこと、相談のゴールを分ける", "🧭", "治療を受ける時も、病気だけでなく暮らし全体を一緒に考えることが大切です。何を大切にしたいか、何を避けたいか、誰に何を相談したいかを分けると、医療者や相談支援センターに伝えやすくなります。", ["治療の話だけで生活が置き去りになっている", "自分が何を大切にしたいのか言葉にできない", "こうはなりたくないという不安がある"], ["治療を受けながら、保ちたい生活について相談できますか？", "避けたいことや譲れないことを、どのように医療者へ伝えればよいですか？", "相談支援センターで、暮らしや仕事、家族のことも一緒に整理できますか？"], ["大切にしたいことを1つ書く", "避けたいことを1つ書く", "相談のゴールを1つ選ぶ"], "https://ganjoho.jp/public/support/index.html", "がん情報サービス 療養生活の支援"),
+  resource("first", "相談の入口", "調べる前に知りたいことを分ける", "病名や治療の一般情報を見る前に、知りたいことを分ける", "📘", "がんの情報は量が多く、いきなり外部サイトを読むだけでは不安が増えることがあります。病気の説明、検査、治療、副作用、生活、お金、家族への伝え方のどれを知りたいのかを分けます。", ["説明を聞いたが、どこから確認すればよいか分からない", "検索結果が多すぎて、信頼できる情報を選べない"], ["理解しておきたい病気や治療の言葉は何ですか？", "自分の場合に当てはまる情報と、一般情報の違いはどこですか？"], ["知りたいことを1つだけ相談メモに書く", "一般情報を読んだ後、自己判断せず主治医に確認する"], "https://ganjoho.jp/public/index.html", "国立がん研究センター がん情報サービス"),
+  resource("center", "相談の入口", "がん相談支援センターに相談する", "治療以外の不安も相談できる窓口として使う", "👥", "がん相談支援センターは、患者さん本人だけでなく家族も相談できる窓口です。治療方針を決めてもらう場所ではなく、困りごとを整理し、必要な情報や相談先につなげてもらうために使います。", ["医師に聞くほどではないと思って我慢している", "お金、仕事、家族、制度の話を誰に聞けばよいか分からない"], ["この内容は相談支援センターで相談できますか？", "主治医に確認した方がよいことは何ですか？"], ["相談メモをテキストで出す", "相談時に、今一番困っていることを1つ目に伝える"], "https://hospdb.ganjoho.jp/kyotendb.nsf/xpConsultantSearchTop.xsp", "がん相談支援センター検索"),
   resource("money", "暮らし・制度", "医療費・制度の不安を整理する", "高額療養費、休職、収入減などを相談しやすくする", "💴", "医療費の不安は、制度名を読むだけでは自分に使えるか分かりにくい領域です。加入している保険、収入、治療予定、仕事の状況を分けて確認します。", ["治療費がどのくらいになるか不安", "休職や収入減で生活が心配"], ["高額療養費制度や限度額適用認定証の対象になりますか？", "相談先は病院、保険者、職場のどこがよいですか？"], ["保険証の種類、勤務先、治療予定をメモする", "病院の相談支援センターで制度相談を予約する"], "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/juuyou/kougakuiryou/index.html", "厚生労働省 高額療養費制度"),
   resource("work", "暮らし・制度", "仕事・学校との両立を相談する", "休み方、伝え方、治療予定の調整を整理する", "💼", "治療と仕事・学校の両立は、病状だけでなく、勤務形態、通院頻度、副作用、職場や学校にどこまで伝えるかが関わります。", ["仕事や学校を続けられるか不安", "職場や学校にどう伝えるか迷っている"], ["治療中に避けた方がよい作業や予定はありますか？", "職場や学校に伝えるための診断書や説明書は必要ですか？"], ["勤務・授業・通院予定をメモに並べる", "職場や学校へ出す前に、相談支援センターで言い方を確認する"], "https://chiryoutoshigoto.mhlw.go.jp/", "厚生労働省 治療と仕事の両立支援"),
   resource("family", "暮らし・制度", "家族・付き添い者として相談する", "本人への伝え方、自分の不安、支える限界を整理する", "👥", "家族は、本人を支えたい気持ちと、自分自身の不安を同時に抱えやすくなります。本人の意思を尊重しながら、家族自身が相談できることも整理します。", ["本人にどう声をかければよいか分からない", "付き添いや介護の負担が大きくなっている"], ["家族として診察時に確認してよいことは何ですか？", "家族自身の不安や負担を相談できる窓口はありますか？"], ["本人に確認したいことと、家族自身の不安を分けて書く", "相談支援センターへ家族として相談する"], "https://ganjoho.jp/public/support/family/index.html", "がん情報サービス 家族向け情報"),
@@ -283,7 +283,7 @@ function supportReply(note) {
       `${topic}について、見た目が変わるかもしれない不安や、自分らしさをどう保つかが気になっているのですね。`,
       "見た目の変化は、体のことだけでなく、人に会うこと、仕事や学校、家族との過ごし方にもつながりやすい不安です。",
       "今の相談は、実際の変化を予測するのではなく、不安な場面と準備したいことを整理する内容に見えます。",
-      "まず整理したいのは、髪、眉、肌、爪、体型、服装、帽子・ウィッグのどれに近いですか？",
+      "気になっているのは、髪、眉、肌、爪、体型、服装、帽子・ウィッグのどれに近いですか？",
       "不安な変化と生活場面を分けると、主治医、看護師、相談支援センターに聞くことを具体化できます。"
     ],
     "症状・副作用": [
@@ -304,15 +304,15 @@ function supportReply(note) {
       "治療と仕事・学校をどう両立するかが引っかかっているのですね。",
       "治療のことをどこまで伝えるか、続けられるかを考えるだけでも負担があります。",
       "今の相談は、治療と生活を両立するために、職場や学校へ何を伝えるか整理する内容に見えます。",
-      "まず整理したいのは、休み方、職場・学校への伝え方、使える制度のどれですか？",
+      "気になっているのは、休み方、職場・学校への伝え方、使える制度のどれですか？",
       "伝える相手と目的を分けると、職場や学校に話す内容を短くできます。"
     ],
     "家族・人間関係": [
       "ご家族や身近な方への伝え方が気になっているのですね。",
       "大切な相手だからこそ、心配をかけたくない気持ちも出てくると思います。",
       "今の相談は、誰に、何を、どの順番で伝えるかを整理したい内容に見えます。",
-      "まず伝えたい相手は、配偶者、親、子ども、きょうだい、その他のどなたですか？",
-      "相手によって伝える量や順番が変わるため、最初に相手を確認します。"
+      "伝えたい相手は、配偶者、親、子ども、きょうだい、その他のどなたですか？",
+      "相手によって伝える量や順番が変わるため、相手を確認します。"
     ],
     "気持ちのつらさ": [
       "不安やつらさが強くなっていて、ひとりで抱えにくい状況なのですね。",
@@ -325,21 +325,21 @@ function supportReply(note) {
       "セカンドオピニオンを考えながら、主治医へどう伝えるか迷っているのですね。",
       "今の医療者との関係を大切にしたい気持ちがあると、言い出しにくく感じやすいと思います。",
       "今の相談は、治療を決める前に、確認したい目的、必要な資料、伝え方を整理する内容に見えます。",
-      "まず確認したいのは、他の治療選択肢、説明の理解、治療方針への納得感のどれですか？",
+      "確認したいのは、他の治療選択肢、説明の理解、治療方針への納得感のどれですか？",
       "目的を短くすると、主治医に資料の依頼をしやすくなります。"
     ],
     "緩和ケア": [
       "緩和ケアという言葉を聞いて、不安や怖さが強くなっているのですね。",
       "知らない言葉を突然聞くと、治療や今後のことまで悪い方向に結びついてしまうことがあります。",
       "今の相談は、緩和ケアの目的や、どんなつらさを相談できるのかを説明してもらうための内容に見えます。",
-      "まず聞きたいのは、緩和ケアの目的、相談できる症状、今の治療との関係のどれですか？",
+      "聞きたいのは、緩和ケアの目的、相談できる症状、今の治療との関係のどれですか？",
       "言葉の意味を確認すると、怖さだけで受け止めずに相談しやすくなります。"
     ],
     "伝え方・聞き方": [
       "説明を聞いた後で分からない点が残り、聞き直し方に迷っているのですね。",
       "診察中は分かったつもりでも、家に帰ってから疑問が出ることは珍しくありません。",
       "今の相談は、理解できていない点を責めるのではなく、もう一度説明してもらうための準備に見えます。",
-      "まず分けたいのは、病気の説明、検査、治療、薬、副作用、今後の予定のどれですか？",
+      "分けたいのは、病気の説明、検査、治療、薬、副作用、今後の予定のどれですか？",
       "聞き直したい点を1つずつ書くと、短い診察時間でも伝えやすくなります。"
     ]
   };
@@ -418,7 +418,7 @@ function briefMessage(note) {
   if (note.recipient === "consultationCenter") return `${prefix}がんの治療や生活のことで「${concern}」が整理できずにいます。医師に聞くこと、使える制度や相談先、家族や職場への伝え方を一緒に整理したいです。`;
   if (note.recipient === "family") return `がんのことで「${concern}」が気になっています。すぐ答えを出したいというより、今困っていることと病院で確認することを一緒に整理したいです。`;
   if (note.recipient === "workplace") return "治療に伴い、勤務や休み方について相談したいです。現時点で確定していることと、まだ主治医に確認が必要なことを分けてお伝えしたいです。";
-  return `「${concern}」について、誰に何を相談すればよいか整理したいです。まず確認したいことは、${reply.next}`;
+  return `「${concern}」について、誰に何を相談すればよいか整理したいです。確認したいことは、${reply.next}`;
 }
 
 function render() {
@@ -468,26 +468,32 @@ function shell() {
 function consentScreen() {
   return `
     <main class="main">
-      <section class="hero">
+      <section class="hero compact-hero">
         <img class="logo" src="./assets/app-icon-180.png" alt="">
         <h2>はじめる前に</h2>
-        <p>このWeb版は、テスターがブラウザで相談メモの流れを確認するための試作です。相談内容はこのブラウザ内に保存され、外部サーバーには送信しません。</p>
+        <p>相談内容を整理する試作です。診断・治療・緊急判断はしません。</p>
       </section>
-      <div class="notice danger"><span aria-hidden="true">⚠️</span><span><strong>テスト時の個人情報について</strong><br>個人名、病院名、主治医名、住所、電話番号、患者番号、詳しい診断情報など、個人が分かる情報は入力しないでください。感想フォームにも相談内容を貼り付けないでください。</span></div>
-      <div class="notice"><span>🛡️</span><span><strong>このアプリの位置づけ</strong><br>がんに関する不安や疑問を整理し、医療者・がん相談支援センター等に相談しやすくするための支援ツールです。診断、治療方針、薬剤、緊急性の判断は行いません。</span></div>
+      <div class="notice danger"><span aria-hidden="true">⚠️</span><span><strong>テストでは個人情報を書かないでください。</strong><br>病院名、主治医名、患者番号、連絡先、詳しい診断情報も避けてください。</span></div>
       <section class="section">
-        <h2>利用前の確認</h2>
-        <ul class="list">
-          <li>相談メモには病歴、治療、症状、家族や仕事の悩みなど要配慮情報が含まれる可能性があります。</li>
-          <li>テストでは、実名、病院名、主治医名、患者番号、連絡先、詳しい診断情報を入力しないでください。</li>
-          <li>このWeb版では相談メモをブラウザ内に保存し、外部サーバーには送信しません。</li>
-          <li>「感想を送る」では、使いやすさへの感想だけを書き、相談メモ本文や個人が分かる情報は送らないでください。</li>
-          <li>強い症状や危険を感じる時は、アプリで判断せず医療機関や救急へ連絡してください。</li>
-        </ul>
+        <h2>確認</h2>
+        <p class="section-lead">メモはこのブラウザ内だけに保存します。外部サーバーには送信しません。</p>
         <div class="button-row">
           <button class="primary" data-accept>同意してはじめる</button>
         </div>
       </section>
+      <details class="section compact-details">
+        <summary>利用前の詳しい確認</summary>
+        <div class="compact-details-body">
+        <ul class="list">
+          <li>相談メモには病歴、治療、症状、家族や仕事の悩みなど要配慮情報が含まれる可能性があります。</li>
+          <li>テストでは、実名、病院名、主治医名、患者番号、連絡先、詳しい診断情報を入力しないでください。</li>
+          <li>このWeb版では相談メモをブラウザ内に保存し、外部サーバーには送信しません。</li>
+          <li>このアプリは、診断、治療方針、薬剤、緊急性の判断は行いません。</li>
+          <li>「感想を送る」では、使いやすさへの感想だけを書き、相談メモ本文や個人が分かる情報は送らないでください。</li>
+          <li>強い症状や危険を感じる時は、アプリで判断せず医療機関や救急へ連絡してください。</li>
+        </ul>
+        </div>
+      </details>
     </main>
   `;
 }
@@ -508,18 +514,20 @@ function currentView() {
 function homeView() {
   const latest = state.notes[0];
   return `
-    <div class="notice"><span>🛡️</span><span>治療法の推奨や症状の判定はせず、治療と暮らしを一緒に考えるための材料を整理します。</span></div>
-    <section class="hero">
+    <div class="notice"><span>🛡️</span><span>診断や治療判断ではなく、相談に持っていく材料を整理します。</span></div>
+    <section class="hero compact-hero">
       <h2>治療と暮らしをデザインする</h2>
-      <p>大切にしたい生活、避けたいこと、相談したいことを出し、必要な人へ伝わる形に整えます。</p>
+      <p>大切にしたいこと、避けたいこと、今のモヤモヤを短く出します。</p>
     </section>
     ${state.notes.length === 0 ? `
-      <section class="section">
-        <h2>はじめて使うなら</h2>
+      <details class="section compact-details">
+        <summary>はじめて使うなら</summary>
+        <div class="compact-details-body">
         ${step(1, "暮らしのゴールを出す", "大事にしていること、心地よい場所、好きな行動、そばにあると落ち着くものを書きます。")}
         ${step(2, "避けたいことも出す", "こうはなりたくない、ここは譲りたくない、というアンチパターンも大事な材料です。")}
         ${step(3, "あとで相談用に整える", "保存後に、治療と暮らしの要約、主治医や相談支援センターへの質問へ変えます。")}
-      </section>
+        </div>
+      </details>
     ` : ""}
     <section class="section">
       <h2>次にやること</h2>
@@ -529,10 +537,10 @@ function homeView() {
       <button class="action-row" type="button" data-tab="info" data-focus-urgent><span class="icon" aria-hidden="true">⚠️</span><span><span class="row-title">急ぐ時の連絡先を確認</span><span class="row-subtitle">強い症状や危険を感じる時</span></span></button>
       <button class="action-row" type="button" data-open-feedback><span class="icon" aria-hidden="true">💬</span><span><span class="row-title">使ってみた感想を送る</span><span class="row-subtitle">迷ったところ、良かったところ、改善したいところ</span></span></button>
     </section>
-    <section class="section">
+    ${latest ? `<section class="section">
       <h2>最近の相談メモ</h2>
-      ${latest ? noteList(state.notes.slice(0, 3)) : `<div class="empty">まだ相談メモがありません。まずは「治療と暮らしを書き出す」から始めてください。</div>`}
-    </section>
+      ${noteList(state.notes.slice(0, 3))}
+    </section>` : ""}
   `;
 }
 
@@ -546,13 +554,28 @@ function step(number, title, detail) {
 
 function writeView() {
   const draft = loadDraft();
+  const primaryPrompts = [
+    "治療を受けながら保ちたい暮らしは、",
+    "こうはなりたくないと思うことは、",
+    "ここだけは譲りたくないことは、",
+    "今いちばん怖いのは、",
+    "本当は聞きたいけれど言いにくいのは、",
+    "私が大事にしていることは、"
+  ];
+  const morePrompts = [
+    "家族や職場に伝えるのが不安なのは、",
+    "心地よいと感じる場所や瞬間は、",
+    "落ち着く行動やそばにあると安心するものは、",
+    "自分らしく過ごすために大切にしたいのは、",
+    "体や見た目の変化で気になっているのは、",
+    "お金、仕事、学校、職場復帰で心配なのは、"
+  ];
   return `
     <div class="notice"><span>🛡️</span><span>診断・治療判断ではなく、相談先に伝えるためのメモを作ります。</span></div>
     <form class="section form-grid" data-note-form>
-      <h2>まず、ここに出す</h2>
-      <p class="section-lead" id="body-help">順番も、言葉づかいも、きれいに整えなくて大丈夫です。整理は保存したあとに行います。スマホのキーボードのマイクで、頭に浮かんだ言葉をそのまま音声入力しても構いません。</p>
-      <div class="notice status-notice"><span aria-hidden="true">💾</span><span>入力中の内容は、このブラウザ内に下書きとして残ります。保存前に別画面へ移動しても戻れます。</span></div>
-      <div class="notice danger"><span aria-hidden="true">⚠️</span><span>テストでは、個人名、病院名、主治医名、患者番号、住所、電話番号などは書かないでください。実際の相談に近い内容は、個人が分からない形に言い換えてください。</span></div>
+      <h2>ここに出す</h2>
+      <p class="section-lead" id="body-help">きれいに書かなくて大丈夫です。音声入力でも始められます。</p>
+      <div class="notice danger compact-notice"><span aria-hidden="true">⚠️</span><span>テストでは個人名・病院名・詳しい診断情報を書かないでください。</span></div>
       <label>頭にあること
         <span class="hint">短くても、途中で止まっても、同じことを何度書いても大丈夫です。</span>
         <textarea class="free-output" name="body" required aria-describedby="body-help" placeholder="例: 何が不安なのか自分でも分からない。治療の話を聞いたけど家に帰ったら怖くなった。仕事のことも家族のことも一緒に考えると苦しい。">${h(draft.body || "")}</textarea>
@@ -560,22 +583,15 @@ function writeView() {
       <div class="prompt-panel" aria-label="書き出しのきっかけ">
         <p>書き出しに迷う時は、近いものを押してください。</p>
         <div class="prompt-grid">
-          ${promptChip("治療を受けながら保ちたい暮らしは、")}
-          ${promptChip("こうはなりたくないと思うことは、")}
-          ${promptChip("ここだけは譲りたくないことは、")}
-          ${promptChip("今いちばん怖いのは、")}
-          ${promptChip("本当は聞きたいけれど言いにくいのは、")}
-          ${promptChip("家族や職場に伝えるのが不安なのは、")}
-          ${promptChip("私が大事にしていることは、")}
-          ${promptChip("心地よいと感じる場所や瞬間は、")}
-          ${promptChip("落ち着く行動やそばにあると安心するものは、")}
-          ${promptChip("自分らしく過ごすために大切にしたいのは、")}
-          ${promptChip("体や見た目の変化で気になっているのは、")}
-          ${promptChip("お金、仕事、学校、職場復帰で心配なのは、")}
+          ${primaryPrompts.map(promptChip).join("")}
         </div>
+        <details class="mini-details">
+          <summary>ほかのきっかけも見る</summary>
+          <div class="prompt-grid extra-prompts">${morePrompts.map(promptChip).join("")}</div>
+        </details>
       </div>
       <label>治療と暮らしのデザイン
-        <span class="hint" id="person-context-help">大事にしていること、保ちたい暮らし、心地よい場所や瞬間、避けたいことを書いてください。治療だけでなく、その人らしさが相談の大切な情報になります。</span>
+        <span class="hint" id="person-context-help">大事にしていること、保ちたい暮らし、避けたいことを書きます。</span>
         <textarea name="personContext" aria-describedby="person-context-help" placeholder="例: 朝の散歩が好き。家族と食卓を囲む時間が大事。仕事を続けたい。人前で急に説明を求められるのは避けたい。">${h(draft.personContext || "")}</textarea>
       </label>
       <details class="optional-details">
@@ -608,12 +624,14 @@ function writeView() {
         <button class="secondary" type="button" data-clear-form>入力を消す</button>
       </div>
     </form>
-    <section class="section">
-      <h2>よくある相談から選ぶ</h2>
+    <details class="section compact-details">
+      <summary>よくある相談から選ぶ</summary>
+      <div class="compact-details-body">
       <div class="template-list">
         ${templates.map((template) => `<button class="action-row" type="button" data-template="${template.id}"><span class="icon" aria-hidden="true">${template.icon}</span><span><span class="row-title">${h(template.title)}</span><span class="row-subtitle">${h(template.subtitle)}</span></span></button>`).join("")}
       </div>
-    </section>
+      </div>
+    </details>
   `;
 }
 
@@ -627,7 +645,7 @@ function questionsView() {
       <div class="notice"><span>🛡️</span><span>相談メモを保存すると、主治医や相談支援センターに聞く質問案を作れます。</span></div>
       <section class="section">
         <h2>まだ相談メモがありません</h2>
-        <p class="section-lead">まずは短い一文だけで構いません。スマホなら音声入力でも始められます。</p>
+        <p class="section-lead">短い一文だけで構いません。スマホなら音声入力でも始められます。</p>
         ${action("write", "✍️", "相談メモを書く", "頭にあることをそのまま残す")}
       </section>
     `;
@@ -636,17 +654,17 @@ function questionsView() {
   const reply = supportReply(latest);
   return `
     <section class="section">
-      <h2>まず見る</h2>
+      <h2>整理された内容</h2>
       ${reply.safety ? `<div class="notice ${reply.critical ? "danger" : ""}"><span>⚠️</span><span>${h(reply.safety)}</span></div>` : ""}
       <h3>モヤモヤの要約</h3>
       ${list(summarizeMoyamoya(latest))}
-      ${replyLine("💬", "まず伝える文", briefMessage(latest))}
+      ${replyLine("💬", "伝える文", briefMessage(latest))}
       ${replyLine("🩺", "主治医に聞くこと", doctorQuestions(latest)[0])}
       ${replyLine("👥", "相談支援センターに聞くこと", supportCenterQuestions(latest)[0])}
     </section>
     <section class="section">
       <h2>次の順番</h2>
-      ${step(1, "まず伝える文を読む", "診察や相談の最初に、この一文を見せる・読むことを想定します。")}
+      ${step(1, "伝える文を読む", "診察や相談の入り口で、この一文を見せる・読むことを想定します。")}
       ${step(2, "聞くことを1つ選ぶ", "全部聞こうとせず、今日いちばん大事な質問を1つ選びます。")}
       ${step(3, "必要ならコピーする", "家族、相談員、診察メモへ貼り付けられる形にします。")}
       <div class="button-row">
@@ -654,10 +672,12 @@ function questionsView() {
         <button class="secondary" type="button" data-tab="info">困りごと別の情報を見る</button>
       </div>
     </section>
-    <section class="section">
-      <h2>メモ別の整理</h2>
+    <details class="section compact-details">
+      <summary>メモ別の詳しい整理</summary>
+      <div class="compact-details-body">
       ${state.notes.map((note) => fullQuestionCard(note)).join("")}
-    </section>
+      </div>
+    </details>
     <section class="section">
       <h2>共有</h2>
       <p class="section-lead">テキストとしてコピーできます。写真やPDFにする場合は、共有先の機能で保存してください。</p>
@@ -677,43 +697,54 @@ function fullQuestionCard(note) {
       ${replyLine("👂", "受け止め", reply.heard)}
       ${replyLine("🫶", "気持ち", reply.feeling)}
       ${replyLine("❓", "次に聞きたいこと", reply.next)}
-      <h3>モヤモヤの要約</h3>
-      ${list(summarizeMoyamoya(note))}
-      <h3>診察前チェック</h3>
-      ${list(preVisitChecklist(note))}
-      <h3>主治医に聞くこと</h3>
-      ${list(doctorQuestions(note))}
-      <h3>相談支援センターに相談できること</h3>
-      ${list(supportCenterQuestions(note))}
+      <details class="mini-details" open>
+        <summary>モヤモヤの要約</summary>
+        ${list(summarizeMoyamoya(note))}
+      </details>
+      <details class="mini-details">
+        <summary>診察前チェック</summary>
+        ${list(preVisitChecklist(note))}
+      </details>
+      <details class="mini-details">
+        <summary>主治医に聞くこと</summary>
+        ${list(doctorQuestions(note))}
+      </details>
+      <details class="mini-details">
+        <summary>相談支援センターに相談できること</summary>
+        ${list(supportCenterQuestions(note))}
+      </details>
     </article>
   `;
 }
 
 function infoView() {
-  const groups = ["まず整理する", "暮らし・制度", "からだ・生活の変化"];
+  const groups = ["相談の入口", "暮らし・制度", "からだ・生活の変化"];
   return `
-    <section class="section">
-      <h2>この画面の使い方</h2>
+    <details class="section compact-details">
+      <summary>この画面の使い方</summary>
+      <div class="compact-details-body">
       ${step(1, "困りごとを選ぶ", "病名ではなく、今困っている場面から選べます。")}
       ${step(2, "要点を読む", "短い解説、聞くこと、次の行動だけを確認します。")}
       ${step(3, "必要なら公式情報へ", "同意してから外部サイトを開きます。")}
-    </section>
+      </div>
+    </details>
     <section class="section">
       <h2>急ぐ時</h2>
       ${resourceButton(trustedResources.find((resourceItem) => resourceItem.group === "急ぐ時"))}
     </section>
     ${groups.map((group) => `
-      <section class="resource-group">
-        <h3>${h(group)}</h3>
-        <p>${h(groupDescription(group))}</p>
+      <details class="resource-group compact-details">
+        <summary>${h(group)}<span>${h(groupDescription(group))}</span></summary>
+        <div class="compact-details-body">
         <div class="grid two">${trustedResources.filter((resourceItem) => resourceItem.group === group).map(resourceButton).join("")}</div>
-      </section>
+        </div>
+      </details>
     `).join("")}
   `;
 }
 
 function groupDescription(group) {
-  if (group === "まず整理する") return "調べる前に、何を相談したいかを分けます。";
+  if (group === "相談の入口") return "調べる前に、何を相談したいかを分けます。";
   if (group === "暮らし・制度") return "お金、仕事、家族など生活に関わる心配を整理します。";
   return "見た目、若い世代の悩み、将来のことを分けます。";
 }

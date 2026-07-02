@@ -202,6 +202,15 @@ a.primary {
   margin-bottom: 16px;
 }
 
+.compact-hero {
+  padding: 14px;
+}
+
+.compact-hero .logo {
+  width: 36px;
+  height: 36px;
+}
+
 .hero h2,
 .section h2 {
   margin: 0 0 8px;
@@ -224,6 +233,11 @@ a.primary {
   margin-bottom: 14px;
   color: var(--muted);
   box-shadow: none;
+}
+
+.compact-notice {
+  padding: 10px;
+  margin-bottom: 8px;
 }
 
 .notice strong {
@@ -262,6 +276,39 @@ a.primary {
 
 .section {
   margin: 14px 0;
+}
+
+.compact-details {
+  padding: 0;
+  overflow: hidden;
+}
+
+.compact-details > summary {
+  display: grid;
+  gap: 3px;
+  min-height: 50px;
+  padding: 13px 14px;
+  cursor: pointer;
+  color: var(--accent-strong);
+  font-weight: 800;
+  list-style-position: inside;
+}
+
+.compact-details > summary span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.compact-details[open] > summary {
+  border-bottom: 1px solid var(--line);
+}
+
+.compact-details-body {
+  display: grid;
+  gap: 12px;
+  padding: 12px 14px 14px;
 }
 
 .card h3,
@@ -412,6 +459,27 @@ textarea.free-output {
   text-align: left;
 }
 
+.mini-details {
+  margin-top: 8px;
+  border-top: 1px solid #f0ddc4;
+}
+
+.mini-details summary {
+  min-height: 44px;
+  padding: 10px 0;
+  cursor: pointer;
+  color: var(--accent-strong);
+  font-weight: 800;
+}
+
+.mini-details .list {
+  margin-top: 0;
+}
+
+.extra-prompts {
+  padding-top: 2px;
+}
+
 .optional-details {
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -481,6 +549,10 @@ textarea.free-output {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: white;
+}
+
+.compact-details-body > .note-card {
+  margin: 0;
 }
 
 .note-card h3 {
@@ -663,13 +735,63 @@ textarea.free-output {
   }
 
   .main {
+    padding-top: 12px;
     padding-left: max(12px, env(safe-area-inset-left));
     padding-right: max(12px, env(safe-area-inset-right));
+  }
+
+  .brand-subtitle,
+  .row-subtitle {
+    display: none;
   }
 
   .hero,
   .section {
     padding: 13px;
+  }
+
+  .hero,
+  .section,
+  .notice {
+    margin-bottom: 10px;
+  }
+
+  .hero h2,
+  .section h2 {
+    font-size: 20px;
+  }
+
+  .action-row {
+    align-items: center;
+    min-height: 48px;
+    padding: 11px 12px;
+  }
+
+  .icon {
+    width: 28px;
+    flex-basis: 28px;
+    font-size: 20px;
+  }
+
+  textarea {
+    min-height: 130px;
+  }
+
+  textarea.free-output {
+    min-height: 190px;
+  }
+
+  .prompt-grid {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scroll-snap-type: x proximity;
+  }
+
+  .prompt-chip {
+    flex: 0 0 auto;
+    max-width: 270px;
+    scroll-snap-align: start;
   }
 
   .grid.two {

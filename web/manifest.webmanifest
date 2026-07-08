@@ -1,6 +1,6 @@
 {
-  "name": "がん相談サポート Web",
-  "short_name": "がん相談",
+  "name": "がん相談サポートアプリ",
+  "short_name": "がん相談サポート",
   "description": "がんに関する不安や疑問を整理し、医療者やがん相談支援センターへ相談しやすくする支援Webアプリです。",
   "start_url": "./index.html",
   "scope": "./",

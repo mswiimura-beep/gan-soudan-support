@@ -1,4 +1,4 @@
-const CACHE_NAME = "gan-soudan-support-web-v2";
+const CACHE_NAME = "gan-soudan-support-web-v10";
 const APP_ASSETS = [
   "./",
   "./index.html",

@@ -347,6 +347,16 @@ a.primary {
   outline-offset: 2px;
 }
 
+.critical-action {
+  background: #fff1ee;
+  border-color: #f4b4ae;
+}
+
+.critical-action .row-title,
+.critical-action .icon {
+  color: var(--danger);
+}
+
 .icon {
   width: 32px;
   flex: 0 0 32px;
@@ -440,6 +450,53 @@ textarea.free-output {
   margin: 0;
   color: var(--muted);
   font-size: 14px;
+}
+
+.output-promise,
+.result-preview {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff7ea;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.output-promise span:first-child,
+.result-preview span {
+  color: var(--text);
+}
+
+.result-preview strong {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: white;
+  color: var(--accent-strong);
+  font-size: 12px;
+}
+
+.prompt-group-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.prompt-group {
+  display: grid;
+  gap: 6px;
+}
+
+.prompt-group-title {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .prompt-grid {
@@ -611,6 +668,48 @@ textarea.free-output {
   line-height: 1.6;
 }
 
+.original-note,
+.carry-item {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: white;
+}
+
+.original-note {
+  margin-top: 12px;
+  padding: 12px;
+}
+
+.original-note p {
+  margin: 5px 0 0;
+  color: var(--text);
+}
+
+.carry-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.carry-item {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 10px;
+  padding: 12px;
+}
+
+.carry-number {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: var(--surface-strong);
+  color: var(--accent-strong);
+  font-size: 14px;
+  font-weight: 800;
+}
+
 .list {
   margin: 8px 0 0;
   padding-left: 1.2em;
@@ -745,6 +844,10 @@ textarea.free-output {
     display: none;
   }
 
+  .critical-action .row-subtitle {
+    display: block;
+  }
+
   .hero,
   .section {
     padding: 13px;
@@ -786,6 +889,10 @@ textarea.free-output {
     overflow-x: auto;
     padding-bottom: 4px;
     scroll-snap-type: x proximity;
+  }
+
+  .prompt-group-grid {
+    gap: 12px;
   }
 
   .prompt-chip {

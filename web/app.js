@@ -1,7 +1,9 @@
 const STORAGE_KEY = "gan-soudan-support.web.notes.v1";
 const CONSENT_KEY = "gan-soudan-support.web.consent.v1";
 const DRAFT_KEY = "gan-soudan-support.web.draft.v1";
-const FEEDBACK_FORM_URL = "";
+const FEEDBACK_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeDpPDOGzYx3nEeUlvJN2kfmuTmR4m90vF7D4drlCzoetQ2hg/viewform";
+const APP_VERSION = "0.7.3";
+const APP_UPDATED_AT = "2026年7月8日";
 
 const categories = [
   ["treatment", "治療について", "🧰"],
@@ -206,6 +208,10 @@ function noteText(note) {
   return [note.title, note.body, note.personContext, note.category, note.role, note.recipient].filter(Boolean).join(" ").toLowerCase();
 }
 
+function notePriorityText(note) {
+  return [note.body, note.category, note.recipient].filter(Boolean).join(" ").toLowerCase();
+}
+
 function domainsFor(note) {
   const domains = [domainForCategory(note.category)];
   const text = noteText(note);
@@ -214,13 +220,13 @@ function domainsFor(note) {
   addDomain(domains, "治療選択", includesAny(text, ["治療", "手術", "抗がん剤", "放射線", "決め", "選", "方針"]));
   addDomain(domains, "医療費・制度", includesAny(text, ["お金", "費用", "医療費", "支払", "制度", "収入", "傷病手当", "高額", "職場復帰", "復職"]));
   addDomain(domains, "仕事・学校", includesAny(text, ["仕事", "職場", "休職", "学校", "働", "職場復帰", "復職"]));
-  addDomain(domains, "家族・人間関係", includesAny(text, ["家族", "子ども", "妻", "夫", "親", "伝え", "付き添"]));
+  addDomain(domains, "家族・人間関係", includesAny(text, ["家族", "子ども", "妻", "夫", "親", "友人", "同僚", "支え", "配慮", "共有", "伝え", "付き添"]));
   addDomain(domains, "セカンドオピニオン", includesAny(text, ["セカンドオピニオン", "別の医師", "他の病院", "資料"]));
   addDomain(domains, "緩和ケア", includesAny(text, ["緩和ケア", "痛み", "つらさを和らげ", "あきらめ"]));
   addDomain(domains, "伝え方・聞き方", includesAny(text, ["説明", "分から", "わから", "聞き直", "質問できない", "信用", "忙しそう"]));
   addDomain(domains, "気持ちのつらさ", includesAny(text, ["不安", "怖", "つら", "泣", "眠れ", "弱い", "気持ち"]));
   addDomain(domains, "緊急・安全", containsSelfHarm(text) || containsUrgent(text));
-  return prioritizeDomains(domains, text);
+  return prioritizeDomains(domains, notePriorityText(note));
 }
 
 function addDomain(domains, domain, condition) {
@@ -228,10 +234,23 @@ function addDomain(domains, domain, condition) {
 }
 
 function prioritizeDomains(domains, text) {
-  const protectedDomains = [];
-  addDomain(protectedDomains, "緊急・安全", domains.includes("緊急・安全"));
-  addDomain(protectedDomains, "伝え方・聞き方", domains.includes("伝え方・聞き方") && includesAny(text, ["説明", "分から", "わから", "聞き直", "質問できない"]));
-  const ordered = [domains[0], ...protectedDomains, ...domains].filter(Boolean);
+  const urgentDomains = [];
+  const communicationDomains = [];
+  addDomain(urgentDomains, "緊急・安全", domains.includes("緊急・安全"));
+  addDomain(communicationDomains, "伝え方・聞き方", domains.includes("伝え方・聞き方") && includesAny(text, ["説明", "分から", "わから", "聞き直", "質問できない"]));
+  const contextPriority = [
+    ["医療費・制度", ["お金", "費用", "医療費", "支払", "制度", "収入", "傷病手当", "高額", "職場復帰", "復職"]],
+    ["仕事・学校", ["仕事", "職場", "休職", "学校", "働", "職場復帰", "復職"]],
+    ["家族・人間関係", ["家族", "子ども", "妻", "夫", "親", "友人", "同僚", "支え", "配慮", "共有", "伝え", "付き添"]],
+    ["見た目の変化", ["見た目", "外見", "髪", "脱毛", "眉", "まゆ", "まつ毛", "肌", "爪", "ウィッグ", "かつら", "帽子", "タオル帽子", "服装", "体型"]],
+    ["症状・副作用", ["だる", "しびれ", "痛", "吐き気", "副作用", "眠れ", "息苦", "発熱"]]
+  ];
+  const contextLeads = domains[0] === "治療選択"
+    ? contextPriority
+      .filter(([domain, words]) => domains.includes(domain) && includesAny(text, words))
+      .map(([domain]) => domain)
+    : [];
+  const ordered = [...urgentDomains, contextLeads[0], domains[0], ...communicationDomains, ...contextLeads.slice(1), ...domains].filter(Boolean);
   return [...new Set(ordered)].slice(0, 3);
 }
 
@@ -279,6 +298,13 @@ function supportReply(note) {
   const domain = primaryDomain(note);
   const topic = note.title || labelFor(categories, note.category);
   const maps = {
+    "緊急・安全": [
+      "急な強い症状や危険を感じる内容が含まれています。",
+      "この場合は、相談内容の整理よりも安全確認と連絡を優先してください。",
+      "今の相談は、アプリ内で判断せず、医療機関や救急へつなぐ必要がある可能性を含みます。",
+      "息苦しさ、胸痛、意識がぼんやりする、強い痛み、出血、高熱などがある時は、119または病院の緊急連絡先へ連絡してください。",
+      "迷う時は一人で判断せず、近くの人や医療機関に連絡してください。"
+    ],
     "見た目の変化": [
       `${topic}について、見た目が変わるかもしれない不安や、自分らしさをどう保つかが気になっているのですね。`,
       "見た目の変化は、体のことだけでなく、人に会うこと、仕事や学校、家族との過ごし方にもつながりやすい不安です。",
@@ -350,15 +376,23 @@ function supportReply(note) {
 
 function doctorQuestions(note) {
   const domain = primaryDomain(note);
+  const text = noteText(note);
   const sets = {
     "見た目の変化": ["治療に伴う髪、眉、肌、爪、体型、服装などの変化について相談できますか？", "帽子、ウィッグ、眉メイク、スキンケアなどを準備する時期や注意点はありますか？", "実際にどの変化が起きるかは、治療内容ごとにどのように確認すればよいですか？"],
     "症状・副作用": ["この症状を、副作用の可能性も含めてどのように伝えればよいですか？", "どの程度の症状が出たら病院へ連絡すべきですか？", "日常生活で気をつけることはありますか？"],
     "治療選択": ["治療の目的、期待できる効果、起こり得る副作用をもう一度確認できますか？", "他の選択肢がある場合、それぞれの違いは何ですか？", "説明で分からなくなった点を、次回もう一度聞き直してもよいですか？"],
+    "医療費・制度": ["治療予定、通院頻度、仕事や収入に影響しそうな時期を確認できますか？", "制度相談をするために、治療内容や予定について持参した方がよい情報はありますか？"],
+    "仕事・学校": ["治療中に仕事や学校で避けた方がよい作業や予定はありますか？", "職場復帰や通学について、体調面で確認しておくことはありますか？"],
+    "緊急・安全": ["急な強い症状や危険を感じる時の連絡先はどこですか？", "どの状態なら救急や病院の緊急連絡先へ連絡すべきですか？"],
     "セカンドオピニオン": ["セカンドオピニオンで確認したい目的を、どのように伝えればよいですか？", "紹介状や検査結果など、必要な資料は何ですか？", "セカンドオピニオン後に、結果を主治医へ共有する方法はありますか？"],
     "緩和ケア": ["緩和ケアでは、今のつらさや生活上の困りごとを相談できますか？", "現在の治療と緩和ケアは、どのような関係になりますか？", "痛み、不眠、不安などを相談する時、どの窓口へ連絡すればよいですか？"],
     "伝え方・聞き方": ["前回の説明で分からなくなった点を、もう一度聞き直してもよいですか？", "病気、検査、治療、薬、副作用、今後の予定を順番に確認できますか？", "家に帰ってから疑問が出た時、どこへ連絡すればよいですか？"]
   };
-  return sets[domain] ?? ["治療スケジュールや体調面で、生活上配慮した方がよいことはありますか？", "病院内で相談できる窓口はありますか？", "相談支援センターに共有してよい情報はどこまでですか？"];
+  const baseQuestions = sets[domain] ?? ["治療スケジュールや体調面で、生活上配慮した方がよいことはありますか？", "病院内で相談できる窓口はありますか？", "相談支援センターに共有してよい情報はどこまでですか？"];
+  if (domain !== "緊急・安全" && includesAny(text, ["説明", "分から", "わから", "聞き直"])) {
+    return [...new Set(["説明で分からなくなった点を、もう一度聞き直してもよいですか？", ...baseQuestions])];
+  }
+  return baseQuestions;
 }
 
 function supportCenterQuestions(note) {
@@ -366,9 +400,10 @@ function supportCenterQuestions(note) {
   const sets = {
     "見た目の変化": ["見た目の変化への不安や準備について相談できますか？", "帽子、ウィッグ、眉メイク、職場や家族への伝え方、助成制度を一緒に整理できますか？"],
     "医療費・制度": ["利用できる医療費支援制度はありますか？", "収入、休職、職場復帰について相談できる制度や窓口はありますか？", "申請先や必要書類を確認できますか？"],
-    "仕事・学校": ["治療と仕事・学校を両立するために相談できる制度はありますか？", "職場や学校に伝える内容を一緒に整理できますか？"],
-    "家族・人間関係": ["家族へどのように伝えるか相談できますか？", "付き添い者が相談できる窓口はありますか？"],
+    "仕事・学校": ["治療と仕事・学校を両立するために相談できる制度はありますか？", "職場や学校に伝える内容と、詳しく伝えなくてよい情報を一緒に整理できますか？"],
+    "家族・人間関係": ["家族や身近な人へどのように伝えるか相談できますか？", "本人に確認してよい範囲と、支える側自身の不安を分けて相談できますか？"],
     "気持ちのつらさ": ["気持ちのつらさを相談できる院内外の窓口はありますか？", "緊急時に頼れる連絡先を整理できますか？"],
+    "緊急・安全": ["今は相談整理よりも、医療機関、救急、身近な人への連絡を優先してください。", "落ち着いた後で、相談支援センターに連絡先や緊急時の動き方を確認できますか？"],
     "セカンドオピニオン": ["セカンドオピニオンの目的、流れ、必要な資料を一緒に整理できますか？", "主治医への伝え方や、相談後の戻り方について確認できますか？"],
     "緩和ケア": ["緩和ケアについて、言葉の意味や相談できる内容を一緒に整理できますか？", "つらさを和らげるために、院内で相談できる窓口はありますか？"],
     "伝え方・聞き方": ["診察で聞き直したいことを、短い質問に整理できますか？", "説明が分からない時に使える相談先や、次に確認する順番を一緒に考えられますか？"]
@@ -376,8 +411,35 @@ function supportCenterQuestions(note) {
   return sets[domain] ?? ["相談内容を整理するために、どの情報を持参するとよいですか？", "公的な情報源や制度を一緒に確認できますか？"];
 }
 
+function sharingBoundaryItems(note) {
+  const domains = domainsFor(note);
+  const text = noteText(note);
+  const items = [];
+  const isSupportSide = ["family", "companion", "supporter"].includes(note.role);
+  const isWorkContext = note.recipient === "workplace" || domains.includes("仕事・学校") || includesAny(text, ["職場", "仕事", "復職", "職場復帰", "同僚", "上司", "学校"]);
+  const isRelationshipContext = domains.includes("家族・人間関係") || includesAny(text, ["家族", "友人", "同僚", "付き添", "支え", "配慮", "共有"]);
+
+  if (isSupportSide && isRelationshipContext) {
+    items.push("本人に確認すること: 何を手伝ってよいか、誰にどこまで話してよいか。");
+    items.push("共有しないこと: 本人の同意なく、病名、治療内容、見通しを周囲へ伝えない。");
+  }
+
+  if (isWorkContext) {
+    items.push("職場・学校に伝えること: 必要な配慮、休み方、連絡方法、復帰時に困りそうなこと。");
+    items.push("詳しく伝えなくてよいこと: 診断名や治療内容は、本人が望む範囲にとどめる。");
+  }
+
+  if (isSupportSide) {
+    items.push("支える側の不安: 本人に背負わせすぎず、相談支援センターで相談できる。");
+  }
+
+  return [...new Set(items)].slice(0, 4);
+}
+
 function preVisitChecklist(note) {
   const items = ["いちばん伝えたいことを1つ選ぶ。", "短く伝える文を診察前に見返す。", "診断・治療・薬・緊急性はアプリでは決めず、医療者に確認する。"];
+  const boundaryItems = sharingBoundaryItems(note);
+  if (boundaryItems.length) items.splice(2, 0, "本人に確認する範囲と、詳しく共有しない情報を分ける。");
   if (note.nextDate) items.splice(1, 0, `${note.nextDate}の前に、このメモと質問リストを見返す。`);
   return items;
 }
@@ -414,10 +476,11 @@ function briefMessage(note) {
   const reply = supportReply(note);
   const concern = (note.body || labelFor(categories, note.category)).slice(0, 70);
   const prefix = rolePrefix(note.role);
+  if (reply.critical) return `${prefix}急な強い症状や危険を感じる内容があります。「${concern}」について、アプリで判断せず、医療機関や救急へ連絡してください。`;
   if (["physician", "nurse"].includes(note.recipient)) return `${prefix}今日は「${concern}」について相談したいです。特に、${reply.next} また、どの状態なら病院へ連絡すべきか確認したいです。`;
   if (note.recipient === "consultationCenter") return `${prefix}がんの治療や生活のことで「${concern}」が整理できずにいます。医師に聞くこと、使える制度や相談先、家族や職場への伝え方を一緒に整理したいです。`;
   if (note.recipient === "family") return `がんのことで「${concern}」が気になっています。すぐ答えを出したいというより、今困っていることと病院で確認することを一緒に整理したいです。`;
-  if (note.recipient === "workplace") return "治療に伴い、勤務や休み方について相談したいです。現時点で確定していることと、まだ主治医に確認が必要なことを分けてお伝えしたいです。";
+  if (note.recipient === "workplace") return "治療に伴い、勤務や休み方について相談したいです。必要な配慮と連絡方法を相談し、詳しい診断名や治療内容は必要な範囲にとどめたいです。";
   return `「${concern}」について、誰に何を相談すればよいか整理したいです。確認したいことは、${reply.next}`;
 }
 
@@ -447,7 +510,7 @@ function shell() {
       <header class="topbar">
         <img class="logo" src="./assets/app-icon-180.png" alt="">
         <div class="brand">
-          <h1 class="brand-title">がん相談サポート Web</h1>
+          <h1 class="brand-title">がん相談サポートアプリ</h1>
           <p class="brand-subtitle">診断・治療判断ではなく、相談内容を整理する支援ツール</p>
         </div>
       </header>
@@ -534,7 +597,7 @@ function homeView() {
       ${action("write", "✍️", "治療と暮らしを書き出す", "大事なこと、避けたいこと、心地よい瞬間、モヤモヤを残す")}
       ${action("questions", "✅", "聞くことを確認する", "主治医・相談員向けの質問案を見る")}
       ${action("info", "📘", "困りごと別に情報を見る", "要点を読んでから公式情報へ進む")}
-      <button class="action-row" type="button" data-tab="info" data-focus-urgent><span class="icon" aria-hidden="true">⚠️</span><span><span class="row-title">急ぐ時の連絡先を確認</span><span class="row-subtitle">強い症状や危険を感じる時</span></span></button>
+      <button class="action-row critical-action" type="button" data-tab="info" data-focus-urgent><span class="icon" aria-hidden="true">⚠️</span><span><span class="row-title">急ぐ時の連絡先を確認</span><span class="row-subtitle">強い症状や危険を感じる時</span></span></button>
       <button class="action-row" type="button" data-open-feedback><span class="icon" aria-hidden="true">💬</span><span><span class="row-title">使ってみた感想を送る</span><span class="row-subtitle">迷ったところ、良かったところ、改善したいところ</span></span></button>
     </section>
     ${latest ? `<section class="section">
@@ -554,27 +617,39 @@ function step(number, title, detail) {
 
 function writeView() {
   const draft = loadDraft();
-  const primaryPrompts = [
-    "治療を受けながら保ちたい暮らしは、",
-    "こうはなりたくないと思うことは、",
-    "ここだけは譲りたくないことは、",
-    "今いちばん怖いのは、",
-    "本当は聞きたいけれど言いにくいのは、",
-    "私が大事にしていることは、"
+  const promptGroups = [
+    {
+      title: "気持ち",
+      prompts: ["今いちばん怖いのは、", "本当は聞きたいけれど言いにくいのは、", "何から話せばよいか迷っているのは、"]
+    },
+    {
+      title: "暮らし",
+      prompts: ["治療を受けながら保ちたい暮らしは、", "心地よいと感じる場所や瞬間は、", "お金、仕事、学校、職場復帰で心配なのは、"]
+    },
+    {
+      title: "自分らしさ",
+      prompts: ["私が大事にしていることは、", "ここだけは譲りたくないことは、", "こうはなりたくないと思うことは、"]
+    }
   ];
   const morePrompts = [
     "家族や職場に伝えるのが不安なのは、",
-    "心地よいと感じる場所や瞬間は、",
     "落ち着く行動やそばにあると安心するものは、",
     "自分らしく過ごすために大切にしたいのは、",
     "体や見た目の変化で気になっているのは、",
-    "お金、仕事、学校、職場復帰で心配なのは、"
+    "将来子どもが欲しいと思っていて気になるのは、"
   ];
   return `
     <div class="notice"><span>🛡️</span><span>診断・治療判断ではなく、相談先に伝えるためのメモを作ります。</span></div>
     <form class="section form-grid" data-note-form>
       <h2>ここに出す</h2>
       <p class="section-lead" id="body-help">きれいに書かなくて大丈夫です。音声入力でも始められます。</p>
+      <div class="output-promise" aria-label="この画面でできること">
+        <span>そのまま出す</span>
+        <span aria-hidden="true">→</span>
+        <span>あとで整理</span>
+        <span aria-hidden="true">→</span>
+        <span>相談で使う</span>
+      </div>
       <div class="notice danger compact-notice"><span aria-hidden="true">⚠️</span><span>テストでは個人名・病院名・詳しい診断情報を書かないでください。</span></div>
       <label>頭にあること
         <span class="hint">短くても、途中で止まっても、同じことを何度書いても大丈夫です。</span>
@@ -582,8 +657,8 @@ function writeView() {
       </label>
       <div class="prompt-panel" aria-label="書き出しのきっかけ">
         <p>書き出しに迷う時は、近いものを押してください。</p>
-        <div class="prompt-grid">
-          ${primaryPrompts.map(promptChip).join("")}
+        <div class="prompt-group-grid">
+          ${promptGroups.map(promptGroup).join("")}
         </div>
         <details class="mini-details">
           <summary>ほかのきっかけも見る</summary>
@@ -614,24 +689,41 @@ function writeView() {
           <input name="nextDate" type="date" value="${h(draft.nextDate || "")}">
         </label>
       </div>
-      <label>任意情報
-        <input name="diagnosis" autocomplete="off" value="${h(draft.diagnosis || "")}" placeholder="診断名・がん種など。分からなければ空欄で構いません">
+      <label>任意情報（テストでは空欄推奨）
+        <input name="diagnosis" autocomplete="off" value="${h(draft.diagnosis || "")}" placeholder="必要なら「治療の説明で聞きたいこと」だけを書いてください">
       </label>
         </div>
       </details>
+      <div class="result-preview" aria-label="保存後に作るもの">
+        <span>保存すると作ります</span>
+        <strong>要約</strong>
+        <strong>伝える文</strong>
+        <strong>質問案</strong>
+      </div>
       <div class="button-row">
-        <button class="primary" type="submit">保存して整理する</button>
+        <button class="primary" type="submit">このまま残す</button>
         <button class="secondary" type="button" data-clear-form>入力を消す</button>
       </div>
+      <p class="hint">保存後に、相談で使いやすい形へ並べます。</p>
     </form>
     <details class="section compact-details">
       <summary>よくある相談から選ぶ</summary>
       <div class="compact-details-body">
+      <p class="hint">入力中の文章がある場合は消さずに、下へ追記します。</p>
       <div class="template-list">
         ${templates.map((template) => `<button class="action-row" type="button" data-template="${template.id}"><span class="icon" aria-hidden="true">${template.icon}</span><span><span class="row-title">${h(template.title)}</span><span class="row-subtitle">${h(template.subtitle)}</span></span></button>`).join("")}
       </div>
       </div>
     </details>
+  `;
+}
+
+function promptGroup(group) {
+  return `
+    <div class="prompt-group">
+      <span class="prompt-group-title">${h(group.title)}</span>
+      <div class="prompt-grid">${group.prompts.map(promptChip).join("")}</div>
+    </div>
   `;
 }
 
@@ -652,23 +744,52 @@ function questionsView() {
   }
   const latest = state.notes[0];
   const reply = supportReply(latest);
+  const boundaryItems = sharingBoundaryItems(latest);
   return `
     <section class="section">
-      <h2>整理された内容</h2>
+      <h2>相談用に並べました</h2>
       ${reply.safety ? `<div class="notice ${reply.critical ? "danger" : ""}"><span>⚠️</span><span>${h(reply.safety)}</span></div>` : ""}
-      <h3>モヤモヤの要約</h3>
-      ${list(summarizeMoyamoya(latest))}
-      ${replyLine("💬", "伝える文", briefMessage(latest))}
-      ${replyLine("🩺", "主治医に聞くこと", doctorQuestions(latest)[0])}
-      ${replyLine("👥", "相談支援センターに聞くこと", supportCenterQuestions(latest)[0])}
+      <p class="section-lead">違っていたら書き直せます。本人の言葉を残したまま、相談で使う3点に分けています。</p>
+      <div class="original-note">
+        <span class="reply-title">あなたが書いたこと</span>
+        <p>${h(compactText(latest.body, 170))}</p>
+      </div>
+    </section>
+    <section class="section">
+      <h2>今日持っていく3点</h2>
+      <div class="carry-list">
+        ${carryItem(1, "伝える文", briefMessage(latest))}
+        ${carryItem(2, "主治医に聞くこと", doctorQuestions(latest)[0])}
+        ${carryItem(3, "相談支援センターに聞くこと", supportCenterQuestions(latest)[0])}
+      </div>
+      ${boundaryItems.length ? `<details class="mini-details" open>
+        <summary>共有する前に確認すること</summary>
+        ${list(boundaryItems)}
+      </details>` : ""}
+      <details class="mini-details">
+        <summary>モヤモヤの要約を見る</summary>
+        ${list(summarizeMoyamoya(latest))}
+      </details>
+    </section>
+    <section class="section">
+      <h2>思い出したことを追加</h2>
+      <p class="section-lead">整理したあとに浮かんだことを、そのまま追記できます。</p>
+      <form class="form-grid" data-append-note>
+        <label>追加で確認したいこと
+          <textarea name="addendum" placeholder="例: 職場にどこまで話すかも相談したい。家族に説明する言葉も考えたい。"></textarea>
+        </label>
+        <div class="button-row">
+          <button class="secondary" type="submit">追記して整理し直す</button>
+        </div>
+      </form>
     </section>
     <section class="section">
       <h2>次の順番</h2>
-      ${step(1, "伝える文を読む", "診察や相談の入り口で、この一文を見せる・読むことを想定します。")}
-      ${step(2, "聞くことを1つ選ぶ", "全部聞こうとせず、今日いちばん大事な質問を1つ選びます。")}
-      ${step(3, "必要ならコピーする", "家族、相談員、診察メモへ貼り付けられる形にします。")}
+      ${step(1, "今日いちばん伝えたいことを選ぶ", "全部を一度に話さなくても大丈夫です。")}
+      ${step(2, "聞く相手を選ぶ", "主治医、看護師、相談支援センター、家族など、話しやすい相手から始められます。")}
+      ${step(3, "診察や相談の時に見せる", "言葉にしにくい時は、この画面を見ながら話せます。")}
       <div class="button-row">
-        <button class="primary" type="button" data-copy-all>相談メモと質問をコピー</button>
+        <button class="primary" type="button" data-copy-brief>診察で読む短い文をコピー</button>
         <button class="secondary" type="button" data-tab="info">困りごと別の情報を見る</button>
       </div>
     </section>
@@ -682,9 +803,22 @@ function questionsView() {
       <h2>共有</h2>
       <p class="section-lead">テキストとしてコピーできます。写真やPDFにする場合は、共有先の機能で保存してください。</p>
       <div class="button-row">
-        <button class="secondary" type="button" data-copy-all>もう一度コピーする</button>
+        <button class="secondary" type="button" data-copy-brief>短い文をコピー</button>
+        <button class="secondary" type="button" data-copy-all>全部コピーする</button>
       </div>
     </section>
+  `;
+}
+
+function carryItem(number, title, text) {
+  return `
+    <div class="carry-item">
+      <span class="carry-number">${number}</span>
+      <span>
+        <span class="reply-title">${h(title)}</span>
+        <span class="reply-text">${h(text)}</span>
+      </span>
+    </div>
   `;
 }
 
@@ -705,6 +839,10 @@ function fullQuestionCard(note) {
         <summary>診察前チェック</summary>
         ${list(preVisitChecklist(note))}
       </details>
+      ${sharingBoundaryItems(note).length ? `<details class="mini-details" open>
+        <summary>本人に確認する範囲・共有しない範囲</summary>
+        ${list(sharingBoundaryItems(note))}
+      </details>` : ""}
       <details class="mini-details">
         <summary>主治医に聞くこと</summary>
         ${list(doctorQuestions(note))}
@@ -750,7 +888,8 @@ function groupDescription(group) {
 }
 
 function resourceButton(item) {
-  return `<button class="action-row" type="button" data-resource="${item.id}"><span class="icon" aria-hidden="true">${item.icon}</span><span><span class="row-title">${h(item.title)}</span><span class="row-subtitle">${h(item.subtitle)}</span></span></button>`;
+  const criticalClass = item.group === "急ぐ時" ? " critical-action" : "";
+  return `<button class="action-row${criticalClass}" type="button" data-resource="${item.id}"><span class="icon" aria-hidden="true">${item.icon}</span><span><span class="row-title">${h(item.title)}</span><span class="row-subtitle">${h(item.subtitle)}</span></span></button>`;
 }
 
 function resourceDialog(item) {
@@ -830,6 +969,11 @@ function feedbackTextFromForm(form) {
 
 function settingsView() {
   return `
+    <section class="section">
+      <h2>アプリ情報</h2>
+      ${replyLine("🏷️", "バージョン", `v${APP_VERSION}`)}
+      ${replyLine("🗓️", "更新日", APP_UPDATED_AT)}
+    </section>
     <section class="section">
       <h2>テスト協力</h2>
       <p class="section-lead">使ってみて迷ったところ、分かりにくかった言葉、安心したところを教えてください。</p>
@@ -917,9 +1061,26 @@ function textExport() {
       ...doctorQuestions(note).map((question) => `- ${question}`),
       "",
       "相談支援センターで整理できること:",
-      ...supportCenterQuestions(note).map((question) => `- ${question}`)
+      ...supportCenterQuestions(note).map((question) => `- ${question}`),
+      sharingBoundaryItems(note).length ? "\n共有する前に確認すること:" : "",
+      ...sharingBoundaryItems(note).map((item) => `- ${item}`)
     ].filter(Boolean).join("\n");
   }).join("\n\n---\n\n");
+}
+
+function briefTextExport(note = state.notes[0]) {
+  if (!note) return "";
+  return [
+    "診察・相談で読む短い文",
+    briefMessage(note),
+    "",
+    "今日聞きたいこと:",
+    `- ${doctorQuestions(note)[0]}`,
+    `- ${supportCenterQuestions(note)[0]}`,
+    ...sharingBoundaryItems(note).slice(0, 2).map((item) => `- ${item}`),
+    "",
+    "注意: このアプリは診断、治療方針、薬剤、緊急性の判断を行いません。"
+  ].join("\n");
 }
 
 function bindEvents() {
@@ -936,6 +1097,14 @@ function bindEvents() {
       state.shouldFocusMain = true;
       render();
     });
+  });
+
+  document.querySelector("[data-focus-urgent]")?.addEventListener("click", () => {
+    state.tab = "info";
+    state.selectedResource = trustedResources.find((item) => item.group === "急ぐ時");
+    state.shouldFocusMain = false;
+    render();
+    document.querySelector(".dialog")?.focus?.();
   });
 
   document.querySelector("[data-note-form]")?.addEventListener("submit", (event) => {
@@ -977,8 +1146,11 @@ function bindEvents() {
       const template = templates.find((item) => item.id === button.dataset.template);
       const form = document.querySelector("[data-note-form]");
       if (!template || !form) return;
-      form.title.value = template.title;
-      form.body.value = template.body;
+      const existingBody = form.body.value.trim();
+      if (!form.title.value.trim()) form.title.value = template.title;
+      form.body.value = existingBody
+        ? `${existingBody}\n\n相談例から追加:\n${template.body}`
+        : template.body;
       form.category.value = template.category;
       form.role.value = template.role;
       form.recipient.value = template.recipient;
@@ -1029,6 +1201,27 @@ function bindEvents() {
       await navigator.clipboard.writeText(textExport());
       alert("相談メモと質問リストをコピーしました。");
     });
+  });
+
+  document.querySelectorAll("[data-copy-brief]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      await navigator.clipboard.writeText(briefTextExport());
+      alert("診察や相談で読む短い文をコピーしました。");
+    });
+  });
+
+  document.querySelector("[data-append-note]")?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const addendum = String(new FormData(form).get("addendum") || "").trim();
+    if (!addendum || !state.notes.length) return;
+    state.notes[0] = {
+      ...state.notes[0],
+      body: `${state.notes[0].body}\n\n追加で確認したいこと:\n${addendum}`,
+      updatedAt: new Date().toISOString()
+    };
+    saveNotes();
+    render();
   });
 
   document.querySelectorAll("[data-resource]").forEach((button) => {

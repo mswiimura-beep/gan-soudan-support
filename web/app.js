@@ -2,7 +2,7 @@ const STORAGE_KEY = "gan-soudan-support.web.notes.v1";
 const CONSENT_KEY = "gan-soudan-support.web.consent.v1";
 const DRAFT_KEY = "gan-soudan-support.web.draft.v1";
 const FEEDBACK_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeDpPDOGzYx3nEeUlvJN2kfmuTmR4m90vF7D4drlCzoetQ2hg/viewform";
-const APP_VERSION = "0.7.3";
+const APP_VERSION = "0.7.4";
 const APP_UPDATED_AT = "2026年7月8日";
 
 const categories = [
@@ -916,7 +916,7 @@ function feedbackDialog() {
     <div class="dialog-backdrop" data-close-feedback>
       <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="feedback-title" tabindex="-1">
         <h2 id="feedback-title">使ってみた感想</h2>
-        <p class="section-lead">テスターの感想は、次の改善に直接使います。個人名、病院名、主治医名、連絡先、詳しい診断情報、相談メモ本文は書かないでください。</p>
+        <p class="section-lead">ここで書いた感想をコピーしてから、Googleフォームに貼り付けて送ります。個人名、病院名、主治医名、連絡先、詳しい診断情報、相談メモ本文は書かないでください。</p>
         <div class="notice danger"><span aria-hidden="true">⚠️</span><span>感想フォームには「使いにくかった場所」「分かりにくかった言葉」「改善してほしい点」だけを書いてください。病状や実在する人・病院が分かる情報は送らないでください。</span></div>
         <form class="form-grid" data-feedback-form>
           <label>使った人に近いもの
@@ -937,11 +937,11 @@ function feedbackDialog() {
             <textarea name="improve" placeholder="例: 文字をもう少し短くしてほしい"></textarea>
           </label>
           <div class="button-row">
-            <button class="primary" type="submit">感想をコピー</button>
-            ${FEEDBACK_FORM_URL ? `<a class="secondary" href="${h(FEEDBACK_FORM_URL)}" target="_blank" rel="noopener">送信フォームを開く</a>` : `<button class="secondary" type="button" data-copy-feedback-template>空の感想テンプレートをコピー</button>`}
+            ${FEEDBACK_FORM_URL ? `<button class="primary" type="button" data-copy-feedback-open>コピーしてGoogleフォームで送る</button>` : `<button class="primary" type="submit">感想をコピー</button>`}
+            <button class="secondary" type="submit">感想だけコピー</button>
             <button class="secondary" type="button" data-close-feedback>閉じる</button>
           </div>
-          ${FEEDBACK_FORM_URL ? "" : `<p class="hint">公開時にGoogleフォーム等のURLを設定すると、ここから直接送信フォームを開けます。</p>`}
+          <p class="hint">${FEEDBACK_FORM_URL ? "Googleフォームが開いたら、コピーされた感想を貼り付けて送信してください。" : "コピーした感想を、メッセージやフォームに貼り付けて送ってください。"}</p>
         </form>
       </section>
     </div>
@@ -1259,24 +1259,18 @@ function bindEvents() {
   document.querySelector("[data-feedback-form]")?.addEventListener("submit", async (event) => {
     event.preventDefault();
     await navigator.clipboard.writeText(feedbackTextFromForm(event.currentTarget));
-    alert("感想をコピーしました。送信フォームやメッセージに貼り付けてください。");
+    alert("感想をコピーしました。Googleフォームやメッセージに貼り付けて送ってください。");
   });
 
-  document.querySelector("[data-copy-feedback-template]")?.addEventListener("click", async () => {
-    const text = [
-      "がん相談サポート Web テスト感想",
-      "個人名、病院名、詳しい診断情報、相談メモ本文は含めない前提の感想です。",
-      "",
-      "使った人に近いもの:",
-      "",
-      "迷ったところ:",
-      "",
-      "良かったところ:",
-      "",
-      "改善してほしいところ:"
-    ].join("\n");
-    await navigator.clipboard.writeText(text);
-    alert("感想テンプレートをコピーしました。");
+  document.querySelector("[data-copy-feedback-open]")?.addEventListener("click", async (event) => {
+    const form = event.currentTarget.closest("form");
+    await navigator.clipboard.writeText(feedbackTextFromForm(form));
+    const opened = window.open(FEEDBACK_FORM_URL, "_blank", "noopener");
+    if (!opened) {
+      alert("感想をコピーしました。ポップアップが開けない場合は、ブラウザの設定を確認してからGoogleフォームを開いてください。");
+      return;
+    }
+    alert("感想をコピーしました。開いたGoogleフォームに貼り付けて送信してください。");
   });
 
   document.onkeydown = handleGlobalKeydown;

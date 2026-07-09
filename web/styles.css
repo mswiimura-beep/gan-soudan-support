@@ -668,11 +668,27 @@ textarea.free-output {
   line-height: 1.6;
 }
 
+.brief-card,
 .original-note,
 .carry-item {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: white;
+}
+
+.brief-card {
+  margin-top: 12px;
+  padding: 14px;
+  border-color: #e6b16d;
+  background: #fff8ec;
+}
+
+.brief-card p {
+  margin: 5px 0 0;
+  color: var(--text);
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.65;
 }
 
 .original-note {
